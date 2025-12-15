@@ -14,20 +14,18 @@
         parts (map #(partition-all %1 s) (range 1 (inc middle)))]
     (seq (filter #(apply = %1) parts))))
 
-(defn day2 [validity-fn]
+(defn get-invalid-ids [validity-fn]
   (let [ranges-str (-> "resources/input2.txt"
                        slurp 
                        string/trim
                        (string/split #","))
-        ranges (map (fn [r] (map parse-long (string/split r #"-"))) ranges-str)
-        result (atom 0)]
-    #_ranges
-    #dbg
-    (doseq [r ranges]
-      (let [ar (apply range r)
-            sum-invalids (->> ar (filter validity-fn) (reduce +))]
-        (swap! result + sum-invalids)))
-    (println @result)))
+        ranges (map (fn [r] (map parse-long (string/split r #"-"))) ranges-str)]
+    (reduce (fn [i r]
+              (let [ar (apply range r)
+                    sum-invalids (->> ar (filter validity-fn) (reduce +))]
+                (+ i sum-invalids)))
+            0
+            ranges)))
 
-(day2 invalid-part1?)
-(day2 invalid-part2?)
+(get-invalid-ids invalid-part1?)
+(get-invalid-ids invalid-part2?)
