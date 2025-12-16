@@ -6,3 +6,6 @@
 (deftest part1-test
   (is (= 17766
          (sut/part1))))
+
+(deftest part2-test
+  (is (= 176582889354075 (sut/part2))))
